@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.example.task9.randoop_jacoco_serviceTests
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.819 s - in com.example.task9.randoop_jacoco_serviceTests
