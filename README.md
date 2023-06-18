@@ -1,21 +1,48 @@
 # Task 9 - Gruppo 27
-## Generazione ed esecuzione test Randoop e analisi della copertura con Jacoco
+## Randoop Level Generator
 
-E' stato utilizzato il framework SpringBoot per la creazione di un microservizio offrente le funzionalità di generazione casuale dei test tramite Randoop su una data classe 
-e della misura della coverage di tali test attraverso Jacoco. Per gestione delle dipendenze di progetto è stato utilizzato il tool di build automation Maven.
+E' realizzato un servizio offrente le funzionalità di generazione di test Randoop su una data classe. I test generati sono divisi per livelli, ordinati per copertura crescente.
 
-Per utilizzare il servizio è necessario avviare il comando "mvn spring-boot:run" nella cartella "RANDOOP_JACOCO_SERVICE" che metterà in esecuzione il servizio il quale sarà in
-ascolto sul porto locale 8080. Alternativamente, attraverso il comando "mvn package", è possibile creare un file .jar per la distribuzione dell'eseguibile del servizio agli utenti. 
-Per avviare la richiesta di generazione dei test dev'essere utilizzata un'API RESTFUL per fornire al microservizio i parametri di funzionamento.
-La richiesta HTTP verso "http://localhost:8080/randoop/generate" di tipo POST dev'essere in formato json e, in particolare deve contenere i seguenti campi:
-    
-    "classpath": Path della classe da testare
-    "JarPath": Path dei .jar necessari alla generazione di test e copertura
-    "classname": Nome della classe da testare
-    "outputpath": Path di output (Test e Report)
-    "time_limit": Tempo di generazione dei test Randoop
-    
-La richiesta HTTP è effettuabile attraverso numerosi software, tra cui Postman (vedi "Configurazione Postman.png"). Alternativamente è possibile utilizzare l'interfaccia grafica in HTML fornita dal file
-"richiesta.html" all'interno del quale è possibile compilare, in maniera user-friendly, la richiesta di generazione dei test.
+## Installazione
 
-Nella cartella di output, sono generati i Regression Test (test che eseguono correttamente) e gli Error Test (test che riportano errori). Nella sottocartella "Report" è generato un file "index.html" contenente i dati sulla copertura del codice. E' possibile visualizzare, oltre alla coverage totale, la copertura dei singoli metodi e delle singole linee di codice.
+Prerequisiti:  sulla  macchina  dev’essere  preliminarmente  installato  Maven  e  Docker dev’essere in esecuzione.
+
+Legenda:
+1.      nome _immagine = nome da dare all’immagine dock che si sta creando
+2.      porto = porto della macchina host su cui mettere in ascolto il servizio
+3.      nome_container = nome da dare al container (istanza di un’immagine) che si sta creando
+4.      cartella_da_montare: (path) deve contenere:
+        I.          La cartella AUTSourceCode con la classe Java da testare
+        II.         La cartella RobotTest che contiene la cartella vuota RandoopTest dove saranno generati i 
+                    livelli di output (codice del test e report di copertura  dello stesso).
+                    Tale cartella può essere situata sulla macchina host eseguente Docker, oppure in un volume di 
+                    Docker stesso.
+
+## Avvio installazione: 
+Nella cartella RANDOOP_LEVEL_GENERATOR, da terminale, avviare i seguenti
+comandi:
+
+1.      mvn package
+2.      docker build -t nome_immagine .
+
+
+## Esecuzione:
+ATTENZIONE: I LIVELLI PRECEDENTEMENTE CREATI SARANNO ELIMINATI!
+
+1.      Avviare il comando
+        docker run -it -p porto:8080 --name nome_container -v cartella_da_montare:/AUTName nome_immagine
+
+2.      Avviare la generazione dei test utilizzando uno dei due successivi metodi:
+        •        Utilizzando  la  GUI  fornita  (LEVEL_REQUEST_GUI.jar)  e  scegliendo  il
+                 numero di livelli
+        •        Inviando una POST HTTP all’indirizzo “http://localhost:8080/randoop/generate”, sostituendo “porto” a 8080.
+                 La richiesta dev’essere in formato json:
+                 
+                 {
+                 "Livello": numero_di_livelli_da_richiedere
+                 }
+         
+3.       Attendere che nella cartella RandoopTest vengano generate le cartelle relative ai livelli generati.       
+4.       Ognuna di esse conterrà il codice del test e il rispettivo report di copertura.
+
+ 
