@@ -5,7 +5,7 @@ E' realizzato un servizio offrente le funzionalità di generazione di test Rando
 
 ## Installazione
 
-Prerequisiti:  sulla  macchina  dev’essere  preliminarmente  installato  Maven  e  Docker dev’essere in esecuzione.
+Prerequisiti:  Docker dev'essere in esecuzione sulla macchina.
 
 Legenda:
 1.      nome _immagine = nome da dare all’immagine dock che si sta creando
@@ -19,11 +19,10 @@ Legenda:
                     Docker stesso.
 
 ## Avvio installazione: 
-Nella cartella RANDOOP_LEVEL_GENERATOR, da terminale, avviare i seguenti
-comandi:
+Nella cartella RANDOOP_LEVEL_GENERATOR, da terminale, avviare il seguente
+comando:
 
-1.      mvn package
-2.      docker build -t nome_immagine .
+1.      docker build -t nome_immagine .
 
 
 ## Esecuzione:
